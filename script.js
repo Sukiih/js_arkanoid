@@ -14,8 +14,8 @@ const ballRadius = 3;
 let x = canvas.width / 2;  //posicion de la pelota
 let y = canvas.height - 30;
 //velocidad pelota
-let dx = 2;  //eje horizontal
-let dy = -2; //eje vertical
+let dx = 4;  //eje horizontal
+let dy = -4; //eje vertical
 
 //variables plataforma
 const paddleHeight = 10;
@@ -31,9 +31,9 @@ let leftPressed = false;
 //Bricks
 const brickRowCount = 6;
 const brickColumnCount = 12;
-const brickWidth = 30;
-const brickHeight = 14;
-const brickPadding = 2;
+const brickWidth = 32;
+const brickHeight = 16;
+const brickPadding = 0;
 const brickOffsetTop = 50;
 const brickOffsetLeft = 35;
 const bricks = [];
@@ -116,12 +116,33 @@ function drawBricks(){
                 brickWidth,
                 brickHeight
             )
+        }
+    }
+}   
+
+
+function collisionDetection(){
+    for (let c = 0; c < brickColumnCount; c++){
+        for (let r = 0; r < brickRowCount; r++){
+            const currentBrick = bricks[c][r];
+            if (currentBrick.status === brick_status.broken) 
+               continue;
+
+                const sobreLaPlataformaEnX = 
+                x > currentBrick.x && 
+                x < currentBrick.x + brickWidth
+
+                const encimaDeLaPlataforma = 
+                y + dy > currentBrick.y && 
+                y + dy < currentBrick.y + brickHeight
+
+                if( sobreLaPlataformaEnX && encimaDeLaPlataforma){
+                    dy = -dy;
+                    currentBrick.status = brick_status.broken;
             }
         }
-    }   
-
-
-function collisionDetection(){}
+    }
+}
 
 function ballMovement(){
     //rebotar pelota en los laterales
@@ -140,10 +161,10 @@ function ballMovement(){
     //si la pelota toca la plataforma
 
     // verificar si la pelota esta encima de la plataforma en eje Y
-    let encimaDeLaPlataforma = (y + dy > paddleY);
+    const encimaDeLaPlataforma = (y + dy > paddleY);
 
     // Verificio si la pelota está sobre la plataforma en eje X
-    let sobreLaPlataformaEnX = (x > paddleX && x < paddleX + paddleWidth);
+    const sobreLaPlataformaEnX = (x > paddleX && x < paddleX + paddleWidth);
 
     if (encimaDeLaPlataforma && sobreLaPlataformaEnX){
         dy = -dy;
@@ -196,8 +217,6 @@ function initEvents (){
         }
     }
 }
-
-
 
 
 function draw (){
