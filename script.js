@@ -63,8 +63,20 @@ function ballMovement(){
         dy = -dy
     }
 
+    //si la bolita toca la plataforma
+
+    // verificar si la pelota esta encima de la plataforma en eje Y
+    let encimaDeLaPlataforma = (y + dy > paddleY);
+
+    // Verificio si la pelota está sobre la plataforma en eje X
+    let sobreLaPlataformaEnX = (x > paddleX && x < paddleX + paddleWidth);
+
+    if (encimaDeLaPlataforma && sobreLaPlataformaEnX){
+        dy = -dy;
+    }
+
     //si la bolita toca el suelo
-    if (y + dy > canvas.height - ballRadius){ 
+    else if (y + dy > canvas.height - ballRadius){ 
         console.log("Perdiste");
         document.location.reload(); 
     }
