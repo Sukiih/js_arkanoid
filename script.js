@@ -1,16 +1,19 @@
 const canvas = document.querySelector("canvas");
 const ctx = canvas.getContext("2d");
 
+const sprite = document.querySelector("#sprite");
+const bricks = document.querySelector("#bricks");
+
 canvas.width = 450;
 canvas.height = 400;
 
 let counter = 0;
 
-//Variables bolita
+//Variables pelota
 const ballRadius = 3;
-let x = canvas.width / 2;  //posicion de la bolita
+let x = canvas.width / 2;  //posicion de la pelota
 let y = canvas.height - 30;
-//velocidad bolita
+//velocidad pelota
 let dx = 2;  //eje horizontal
 let dy = -2; //eje vertical
 
@@ -36,11 +39,17 @@ function drawBall(){
 }
 
 function drawPaddle(){
-    ctx.fillRect(
-        paddleX,
-        paddleY,
-        paddleWidth,
-        paddleHeight
+
+    ctx.drawImage(
+        sprite, //img
+        29,   //clipX: coordenadas de recorte
+        174,  //clipY: coordenadas de recorte
+        paddleWidth,  //tamaño de recorte
+        paddleHeight,
+        paddleX,   //posicion X del dibujo
+        paddleY,   //posicion Y del dibujo
+        paddleWidth,  //ancho del dibujo
+        paddleHeight  //alto del dibujo
     )
 }
 
@@ -50,7 +59,7 @@ function drawBricks(){}
 function collisionDetection(){}
 
 function ballMovement(){
-    //rebotar bolita en los laterales
+    //rebotar pelota en los laterales
     if(
         x + dx > canvas.width - ballRadius || //parte derecha
         x + dx < ballRadius //parte izquierda
@@ -58,12 +67,12 @@ function ballMovement(){
         dx = -dx
     }
 
-    //rebotar bolita parte superior
+    //rebotar pelota parte superior
     if(y + dy < ballRadius){ //parte superior
         dy = -dy
     }
 
-    //si la bolita toca la plataforma
+    //si la pelota toca la plataforma
 
     // verificar si la pelota esta encima de la plataforma en eje Y
     let encimaDeLaPlataforma = (y + dy > paddleY);
@@ -75,7 +84,7 @@ function ballMovement(){
         dy = -dy;
     }
 
-    //si la bolita toca el suelo
+    //si la pelota toca el suelo
     else if (y + dy > canvas.height - ballRadius){ 
         console.log("Perdiste");
         document.location.reload(); 
