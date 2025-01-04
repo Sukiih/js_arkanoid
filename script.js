@@ -2,7 +2,7 @@ const canvas = document.querySelector("canvas");
 const ctx = canvas.getContext("2d");
 
 const sprite = document.querySelector("#sprite");
-const bricks = document.querySelector("#bricks");
+const $bricks = document.querySelector("#bricks");
 
 canvas.width = 450;
 canvas.height = 400;
@@ -27,6 +27,46 @@ let paddleY = canvas.height - paddleHeight - 10;
 //movimiento plataforma
 let rigthPressed = false;
 let leftPressed = false;
+
+//Bricks
+const brickRowCount = 6;
+const brickColumnCount = 12;
+const brickWidth = 30;
+const brickHeight = 14;
+const brickPadding = 2;
+const brickOffsetTop = 50;
+const brickOffsetLeft = 35;
+const bricks = [];
+
+const brick_status = {
+    active: 1,
+    broken: 0,
+
+}
+
+
+//c = columna, r = rows
+for (let c = 0; c < brickColumnCount; c++){
+    //inicializar con array vacio
+    bricks[c] = [];
+    for (let r = 0; r < brickRowCount; r++){
+        //calculo de la posicion de los ladrillos en la pantalla
+       const brickX = c * (brickWidth + brickPadding) + brickOffsetLeft;
+       const brickY = r * (brickHeight + brickPadding) + brickOffsetTop;
+
+       //colores bricks
+       const randomColor = Math.floor(Math.random() * 8);
+
+
+       //Guardar las posiciones de los ladrillos
+       bricks[c][r] = 
+       {x: brickX, 
+        y: brickY, 
+        status: brick_status.active, 
+        color: randomColor
+    };
+    }
+}
 
 const paddleSensitivity = 7;
 
@@ -53,7 +93,32 @@ function drawPaddle(){
     )
 }
 
-function drawBricks(){}
+function drawBricks(){
+    for (let c = 0; c < brickColumnCount; c++){
+        for (let r = 0; r < brickRowCount; r++){
+            //recupero el brick actual
+            const currentBrick = bricks[c][r];
+
+            if (currentBrick.status === brick_status.broken) 
+                continue;
+
+            
+            const clipX = currentBrick.color * 32;
+
+            ctx.drawImage(
+                $bricks,
+                clipX,
+                0,
+                31,
+                16,
+                currentBrick.x,
+                currentBrick.y,
+                brickWidth,
+                brickHeight
+            )
+            }
+        }
+    }   
 
 
 function collisionDetection(){}
