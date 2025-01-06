@@ -218,7 +218,6 @@ function initEvents (){
     }
 }
 
-
 function draw (){
     cleanCanvas();
 //dibujo de elementos
@@ -236,5 +235,20 @@ function draw (){
     window.requestAnimationFrame(draw);
 }
 
+//Controles touch
+function initTouchEvents() {
+    canvas.addEventListener("touchmove", (event) => {
+        event.preventDefault(); 
+        // primer toque
+        const touch = event.touches[0]; 
+        // Coordenadas canvas
+        const rect = canvas.getBoundingClientRect(); 
+        // Posición relativa al canvas
+        const touchX = touch.clientX - rect.left; 
+        paddleX = Math.max(0, Math.min(touchX - paddleWidth / 2, canvas.width - paddleWidth));
+    });
+}
+
 draw();
+initTouchEvents();
 initEvents();
